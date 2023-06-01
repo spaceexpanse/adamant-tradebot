@@ -105,21 +105,21 @@ fi
 
 #Packages
 printf "Updating system packages…\n\n"
-sudo apt update && sudo apt upgrade -y
+apt update && apt upgrade -y
 printf "\n\nInstalling postgresql and other prerequisites…\n\n"
-sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ `lsb_release -cs`-pgdg main" > /etc/apt/sources.list.d/pgdg.list' && wget -q https://www.postgresql.org/media/keys/ACCC4CF8.asc -O - | sudo apt-key add -
-sudo apt update && sudo DEBIAN_FRONTEND=noninteractive apt-get -yq upgrade
-sudo apt install -y build-essential curl automake autoconf libtool rpl mc git postgresql postgresql-contrib libpq-dev redis-server
+sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ `lsb_release -cs`-pgdg main" > /etc/apt/sources.list.d/pgdg.list' && wget -q https://www.postgresql.org/media/keys/ACCC4CF8.asc -O - | apt-key add -
+apt update && DEBIAN_FRONTEND=noninteractive apt-get -yq upgrade
+apt install -y build-essential curl automake autoconf libtool rpl mc git postgresql postgresql-contrib libpq-dev redis-server
 
 #Start postgres. This step is necessary for Windows Subsystem for Linux machines
-sudo service postgresql start
+service postgresql start
 
 #Postgres
 printf "\n\nCreating database '%s' and database user '%s'…\n\n" "$databasename" "$username"
 cd /tmp || echo "/tmp: No such directory"
-sudo -u postgres psql -c "CREATE ROLE ${username} LOGIN PASSWORD '${DB_PASSWORD}';"
-sudo -u postgres psql -c "CREATE DATABASE ${databasename};"
-sudo -u postgres psql -c "ALTER DATABASE ${databasename} OWNER TO ${username};"
+-u postgres psql -c "CREATE ROLE ${username} LOGIN PASSWORD '${DB_PASSWORD}';"
+-u postgres psql -c "CREATE DATABASE ${databasename};"
+-u postgres psql -c "ALTER DATABASE ${databasename} OWNER TO ${username};"
 
 #Run next commands as user
 su - "$username" <<EOSU
