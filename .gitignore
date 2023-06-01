@@ -16,3 +16,4 @@ balances.out
 trade/tests/debug_trader.js
 client.py
 test_encode.py
+*.~*
